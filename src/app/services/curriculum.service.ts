@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 import {
   CURRICULUM,
   ALL_SKILLS,
@@ -19,8 +19,15 @@ export class CurriculumService {
 
   private readonly progress = injectProgress();
 
-  /** Last skill the user practiced (persisted by ProgressService). */
+  /** Last skill the user practiced (persisted by ProgressService); refreshes when the active user changes. */
   readonly lastSkillId = signal<string | null>(this.progress.getLastSkillId());
+
+  private readonly syncLastSkill = effect(() => {
+    const current = this.progress.getLastSkillId();
+    if (current !== this.lastSkillId()) {
+      this.lastSkillId.set(current);
+    }
+  });
 
   readonly continueSkill = computed(() => {
     const id = this.lastSkillId();

@@ -1,5 +1,7 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { MasteryLevel } from '../data/curriculum';
+import { DbService } from './db.service';
+import { AuthService } from './auth.service';
 
 export interface SkillProgress {
   level: MasteryLevel;
@@ -17,7 +19,7 @@ export interface ProgressState {
   history: Record<string, { correct: number; total: number }>; // per-day counts
 }
 
-const STORAGE_KEY = 'cl-progress-v1';
+const ANON_KEY = 'cl-progress-anon-v1';
 
 const EMPTY_SKILL: SkillProgress = { level: 0, correct: 0, attempts: 0, bestStreak: 0, lastAttempt: 0 };
 
@@ -26,12 +28,31 @@ function todayKey(): string {
 }
 
 function emptyState(): ProgressState {
-  return { skills: {}, lastSkillId: null, streak: { current: 0, longest: 0, lastActiveDay: '' }, today: { day: todayKey(), correct: 0, total: 0 }, history: {} };
+  return {
+    skills: {},
+    lastSkillId: null,
+    streak: { current: 0, longest: 0, lastActiveDay: '' },
+    today: { day: todayKey(), correct: 0, total: 0 },
+    history: {},
+  };
 }
 
 @Injectable({ providedIn: 'root' })
 export class ProgressService {
+  private readonly db = inject(DbService);
+  private readonly auth = inject(AuthService);
+
+  private readonly storageKey = signal<string>(this.keyForUser());
   private readonly state = signal<ProgressState>(this.load());
+
+  /** When the signed-in user changes, swap to their saved progress. */
+  private readonly swapEffect = effect(() => {
+    const key = this.keyForUser();
+    if (key !== this.storageKey()) {
+      this.storageKey.set(key);
+      this.state.set(this.load());
+    }
+  });
 
   // ---- Read API ----
   readonly totalCorrect = computed(() =>
@@ -73,19 +94,12 @@ export class ProgressService {
   // ---- Write API: called after each practice attempt ----
   recordAttempt(skillId: string, correct: boolean): MasteryLevel {
     const s = this.getSkillProgress(skillId);
-    const streakNow = correct ? s.bestStreak === s.correct ? s.correct + 1 : 0 : 0;
-
-    let correctInRow = correct ? this.currentRun(skillId) + 1 : 0;
+    const streakNow = correct ? s.correct + 1 : 0;
     let level: MasteryLevel = s.level;
+
     if (correct) {
-      if (correctInRow >= 5) level = 3;
-      else if (s.correct + 1 >= 4 || (s.correct + 1 >= 3 && level >= 2)) level = 2;
-      else if (s.correct + 1 >= 1 && level === 0) level = 1;
-      if (s.correct + 1 >= 3 && level < 2) level = 2;
-      if (s.correct + 1 >= 4) level = level >= 2 ? 2 : level;
-      // Simple bucketing by total correct:
       const total = s.correct + 1;
-      level = total >= 5 && correctInRow >= 3 ? 3 : total >= 3 ? 2 : total >= 1 ? 1 : 0;
+      level = total >= 5 && streakNow >= 3 ? 3 : total >= 3 ? 2 : total >= 1 ? 1 : 0;
     } else {
       // Wrong answers decrease level slightly (never below 0)
       level = s.level > 0 ? ((s.level - 1) as MasteryLevel) : 0;
@@ -96,8 +110,6 @@ export class ProgressService {
     const history = { ...this.state().history };
     const h = history[day] ?? { correct: 0, total: 0 };
     history[day] = { correct: h.correct + (correct ? 1 : 0), total: h.total + 1 };
-
-    const streak = this.bumpStreak(day);
 
     this.update({
       skills: {
@@ -112,20 +124,21 @@ export class ProgressService {
       },
       today: { day, correct: prevDayState.correct + (correct ? 1 : 0), total: prevDayState.total + 1 },
       history,
-      streak,
+      streak: this.bumpStreak(day),
     });
 
     return level;
   }
 
-  resetAll(): void {
+  resetMyProgress(): void {
     this.state.set(emptyState());
     this.save();
   }
 
   // ---- Internals ----
-  private currentRun(skillId: string): number {
-    return this.getSkillProgress(skillId).bestStreak > 0 ? this.getSkillProgress(skillId).bestStreak : 0;
+  private keyForUser(): string {
+    const u = this.auth.user();
+    return u ? `user:${u.id}` : 'anon';
   }
 
   private countLevel(level: MasteryLevel): number {
@@ -148,16 +161,26 @@ export class ProgressService {
   }
 
   private load(): ProgressState {
+    const key = this.storageKey();
+    if (key !== 'anon') {
+      const userId = key.slice(5);
+      return this.db.getProgress(userId) ?? emptyState();
+    }
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(ANON_KEY);
       if (raw) return { ...emptyState(), ...JSON.parse(raw) };
     } catch { /* ignore */ }
     return emptyState();
   }
 
   private save(): void {
+    const key = this.storageKey();
+    if (key !== 'anon') {
+      this.db.setProgress(key.slice(5), this.state());
+      return;
+    }
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state()));
-    } catch { /* storage full/unavailable */ }
+      localStorage.setItem(ANON_KEY, JSON.stringify(this.state()));
+    } catch { /* storage full */ }
   }
 }

@@ -11,7 +11,8 @@ import { RouterLink } from '@angular/router';
       <h1 class="display text-[44px] mb-4">This limit does not exist.</h1>
       <p class="body mb-8">The page you're looking for could not be found — it may have been moved or removed.</p>
       <div class="flex gap-3 justify-center">
-        <a routerLink="/" class="btn btn-primary">Go to Dashboard</a>
+        <a routerLink="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+        <a routerLink="/" class="btn btn-outline">Home</a>
         <a routerLink="/skills" class="btn btn-outline">Browse Skills</a>
       </div>
     </div>
