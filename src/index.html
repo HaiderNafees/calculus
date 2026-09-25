@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CalculusLearn — Interactive Calculus Learning</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A free, open-source interactive calculus learning platform. 126 skills across limits, derivatives, integrals, differential equations and applications of integration — with lessons, interactive graphs, and practice.">
+  <meta name="theme-color" content="#0f4c3a">
+  <meta property="og:title" content="CalculusLearn — Interactive Calculus Learning">
+  <meta property="og:description" content="Learn calculus with lessons, interactive graphs and adaptive practice. Free & open source.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Theme pre-init: avoid flash of wrong theme -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('cl-theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) { /* noop */ }
+    })();
+  </script>
+
+  <!-- MathJax 3 config -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] },
+      startup: { typeset: true },
+      chtml: { displayAlign: 'center' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+  <!-- JSXGraph -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraph.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.10.1/distrib/jsxgraphcore.js"></script>
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+
+  <!-- Algebra.js -->
+  <script src="https://cdn.jsdelivr.net/npm/algebra.js@0.2.6/build/algebra.min.js"></script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
