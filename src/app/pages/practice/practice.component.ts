@@ -11,7 +11,8 @@ import { LimitVisualizerComponent } from '../../components/graphs/limit-visualiz
 import { RiemannSumComponent } from '../../components/graphs/riemann-sum.component';
 import { MasteryBadgeComponent } from '../../components/shared/mastery-badge.component';
 import { findSkill, MASTERY_LABELS, MasteryLevel } from '../../data/curriculum';
-import { GeneratedProblem, answersEq } from '../../data/problem-engine';
+import { GeneratedProblem } from '../../data/problem-engine';
+import { answersEquivalent } from '../../data/answer-checker';
 
 @Component({
   selector: 'app-practice',
@@ -203,7 +204,7 @@ export class PracticeComponent implements OnInit {
     if (!user.trim()) return;
 
     const accepted = [p.correctAnswer, ...(p.acceptedAnswers ?? [])];
-    const correct = accepted.some((a) => answersEq(a, user));
+    const correct = accepted.some((a) => answersEquivalent(user, a));
 
     this.feedback.set(correct ? 'correct' : 'incorrect');
     const level = this.progress.recordAttempt(this.skillId, correct);

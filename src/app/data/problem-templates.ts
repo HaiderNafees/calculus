@@ -175,7 +175,7 @@ const b4: ProblemTemplate = {
     return {
       questionLatex: `\\lim_{x \\to ${k}} \\frac{\\sqrt{x} - \\sqrt{${k}}}{x - ${k}}`,
       correctAnswer: `\\frac{1}{2\\sqrt{${k}}}`,
-      acceptedAnswers: [`1/${2 * k}`, '0.5/' + k, `${(1 / (2 * k)).toFixed(4)}`],
+      acceptedAnswers: [`\\frac{1}{${2 * k}}`, `1/${2 * k}`, `${(1 / (2 * Math.sqrt(k))).toFixed(4)}`, `\\frac{1}{2\\sqrt{${k}}}`],
       hints: [
         'Substitution gives 0/0 again.',
         'Multiply numerator and denominator by the conjugate: √x + √' + k,
