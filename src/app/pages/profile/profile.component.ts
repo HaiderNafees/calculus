@@ -17,7 +17,7 @@ import { ProgressService } from '../../services/progress.service';
       @if (auth.user(); as u) {
         <!-- Account card -->
         <div class="card p-6 mb-4 flex items-center gap-4">
-          <div class="w-14 h-14 rounded-full bg-accent text-white dark:text-[#0d1512] flex items-center justify-center display text-[22px] shrink-0">
+          <div class="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center display text-[22px] shrink-0">
             {{ initials(u.name) }}
           </div>
           <div class="min-w-0">

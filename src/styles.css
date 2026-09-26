@@ -21,22 +21,6 @@
   --code-text: #e8e8e8;
 }
 
-.dark {
-  --bg: #121412;
-  --surface: #1b1e1c;
-  --ink: #f0ede6;
-  --ink-soft: #c2beb4;
-  --muted: #7d7a72;
-  --rule: #2c2f2c;
-  --rule-strong: #3c403c;
-  --accent: #6fbf9d;
-  --accent-soft: #1d2b25;
-  --accent-ink: #a8dcc4;
-  --signal: #e08a54;
-  --signal-soft: #2e211a;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-}
-
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -44,7 +28,6 @@ body {
   color: var(--ink);
   font-family: 'Source Sans 3', sans-serif;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .mono { font-family: 'JetBrains Mono', monospace; }
@@ -93,7 +76,6 @@ body {
 }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { filter: brightness(1.12); }
-.dark .btn-primary { color: #0d1512; }
 .btn-outline { background: transparent; border-color: var(--rule-strong); color: var(--ink); }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 .btn-ghost { background: transparent; color: var(--ink-soft); }
@@ -119,7 +101,6 @@ body {
 .mastery-learning { color: var(--signal); border-color: var(--signal); background: var(--signal-soft); }
 .mastery-practiced { color: var(--accent-ink); border-color: var(--accent); background: var(--accent-soft); }
 .mastery-mastered { color: #fff; border-color: var(--accent); background: var(--accent); }
-.dark .mastery-mastered { color: #0d1512; }
 
 /* Fade-in animation */
 .fade-in { opacity: 0; transform: translateY(16px); animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
@@ -143,12 +124,8 @@ body {
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* MathJax dark-mode adjustment */
-.dark mjx-container[jax='CHTML'][display='true'] { color: var(--ink); }
-
-/* JSXGraph text color in dark mode */
-.dark .JSXGraph jgline { }
-.dark .jsxgraph-point-legend { color: var(--ink); }
+/* JSXGraph text color */
+.jsxgraph-point-legend { color: var(--ink); }
 
 /* Reduce motion preference */
 @media (prefers-reduced-motion: reduce) {

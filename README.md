@@ -13,9 +13,7 @@ practice. No account required: progress is stored locally in your browser.
 - **Skill Explorer** — searchable, filterable grid of all 126 skills with mastery indicators
 - **Practice Arena** — parameterized problem generator (fresh numbers every time), math input with live LaTeX preview and symbol keyboard, progressive hints, step-by-step solutions, mastery scoring (New → Learning → Practiced → Mastered)
 - **Interactive visualizations** — JSXGraph function graphs, draggable limit visualizer, Riemann sum explorer
-- **Lesson Viewer** — key concepts, worked examples, common mistakes, curated Khan Academy videos (Module 1 written; more coming)
-- **Dark mode** — respects system preference, manual toggle, persisted
-- **Responsive** — mobile-first, works on phones, tablets, desktops
+- **Lesson Viewer** — key concepts, worked examples, common mistakes, curated Khan Academy videos (Module 1 written; more coming)  - **Responsive** — mobile-first, works on phones, tablets, desktops
 
 ## Tech stack
 
@@ -83,11 +81,9 @@ src/app/
 └── services/
     ├── curriculum.service.ts
     ├── progress.service.ts    # LocalStorage mastery + streaks
-    ├── problem-generator.service.ts
-    ├── mathjax.service.ts
-    ├── jsxgraph.service.ts
-    └── theme.service.ts
-```
+    ├── problem-generator.service.ts    ├── mathjax.service.ts
+    └── jsxgraph.service.ts
+    ```
 
 ## License
 
