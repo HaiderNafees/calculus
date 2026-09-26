@@ -18,8 +18,10 @@ module.exports = {
         'signal-soft': 'var(--signal-soft)',
       },
       fontFamily: {
-        sans: ['"Source Sans 3"', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        sans: ['var(--font-sans)'],
+        compact: ['var(--font-compact)'],
+        mono: ['var(--font-mono)'],
+        serif: ['var(--font-serif)'],
       },
     },
   },

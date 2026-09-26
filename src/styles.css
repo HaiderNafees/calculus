@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Apple system typography ===== */
+:root {
+  /* Primary interface font — SF Pro on Apple devices */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+  /* Tighter variant optimized for smaller screens (SF Compact on watchOS) */
+  --font-compact: -apple-system, ui-rounded, 'SF Compact', 'SF Compact Text', 'SF Compact Display', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+  /* Monospaced version used in coding environments (SF Mono in Xcode) */
+  --font-mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', Consolas, monospace;
+  /* Complementary serif family designed by Apple (New York) */
+  --font-serif: ui-serif, 'New York', 'Times New Roman', Times, serif;
+}
+
 /* ===== CalculusLearn Design Tokens ===== */
 :root {
   --bg: #f7f5f0;
@@ -26,14 +38,15 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
 }
 
-.mono { font-family: 'JetBrains Mono', monospace; }
+.mono { font-family: var(--font-mono); }
 
 .eyebrow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -64,7 +77,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 14px;
   padding: 10px 18px;
@@ -85,7 +98,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

@@ -18,5 +18,4 @@ CalculusLearn is built entirely on free and open-source tools. Thank you to thes
 - Video lessons link to [Khan Academy](https://www.khanacademy.org) and other free educational YouTube content.
 
 ## Typography
-- [Source Sans 3](https://fonts.google.com/specimen/Source+Sans+3) — SIL Open Font License
-- [JetBrains Mono](https://www.jetbrains.com/lp/mono/) — SIL Open Font License
+- Apple system fonts (SF Pro, SF Compact, SF Mono, New York) rendered natively on Apple devices via system font stacks; Segoe UI, Roboto and standard monospace/serif fallbacks elsewhere. No web font files are bundled.
